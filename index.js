@@ -1,6 +1,8 @@
 // подключение express
 const express = require("express");
 const { v4: uuid } = require( 'uuid')
+const demoRouter = require('./routes/demo')
+const indexRouter = require('./routes/index')
 
 class Book {
   constructor({ 
@@ -8,9 +10,10 @@ class Book {
     title = "string", 
     description = "string", 
     authors = "string", 
-    favorite = "string", 
+    favorite = bool, 
     fileCover = "string", 
-    fileName = "string" 
+    fileName = "string",
+    fileBook = "string"
   } = {}) {
     Object.assign(this, { id, title, description, authors, favorite, fileCover, fileName });
   }
@@ -107,5 +110,10 @@ app.delete('/api/books/:id', (req, res) => {
     res.json('404 | страница не найдена')
   }
 })
+
+app.use('/demo', demoRouter)
+app.use('/api/books/:id/download', express.static(__dirname+'/api/books/:id/download'))
+
+app.use('/api/books/:id/download',indexRouter)
 
 app.listen(3000);
