@@ -1,15 +1,25 @@
 const express = require('express')
 const router = express.Router()
 const fileMulter = require('../middleware/file')
+const { v4: uuid } = require('uuid');
+const Book = require('../index');
 
 router. post('/upload',
   
-  fileMulter.single('name'),
+  fileMulter.single('file'),
   (req, res) => {
     if(req.file){
-      const {path} = req.file
-      res.json({path})
+      const {path, originalname} = req.file
+      const newBook = new Book({
+        id: uuid(),
+        fileBook: path,
+        fileName: originalname,
+        ...req.body
+      });
+      stor.book.push(newBook);
+      res.json(newBook);
+    } else {
+      res.status(400).json({ error: 'File not uploaded' });
     }
-    res.json()
-})
-module.exports = router
+});
+module.exports = router;

@@ -1,8 +1,9 @@
 // подключение express
 const express = require("express");
-const { v4: uuid } = require( 'uuid')
-const demoRouter = require('./routes/demo')
-const indexRouter = require('./routes/index')
+const { v4: uuid } = require('uuid');
+const demoRouter = require('./routes/demo');
+const indexRouter = require('./routes/index');
+//const Book = require('./models/book');
 
 class Book {
   constructor({ 
@@ -111,9 +112,18 @@ app.delete('/api/books/:id', (req, res) => {
   }
 })
 
-app.use('/demo', demoRouter)
-app.use('/api/books/:id/download', express.static(__dirname+'/api/books/:id/download'))
+app.use('/api/books/:id/download', (req, res) => {
+  const { id } = req.params;
+  const book = stor.book.find(book => book.id === id);
+  if (book) {
+    res.download(book.fileBook, book.fileName);
+  } else {
+    res.status(404).json('404 | страница не найдена');
+  }
+});
 
-app.use('/api/books/:id/download',indexRouter)
+app.use('/demo', demoRouter);
+app.use('/api/books/:id/download', indexRouter);
 
-app.listen(3000);
+const PORT = process.env.PORT || 3000
+app.listen(PORT);
