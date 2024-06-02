@@ -11,7 +11,7 @@ class Book {
     title = "string", 
     description = "string", 
     authors = "string", 
-    favorite = bool, 
+    favorite = Boolean, 
     fileCover = "string", 
     fileName = "string",
     fileBook = "string"
@@ -54,17 +54,16 @@ app.get('/api/books', (req, res) => {
 })
 
 app.get('/api/books/:id', (req, res) => {
-  const {book} = stor
-  const {id} = req.params
-  const ind = book.findIndex(el => el.id === id)
+  const { book } = stor;
+  const { id } = req.params;
+  const ind = book.findIndex(el => el.id === id);
 
-  if(ind !== -1) {
-    res.json(book[idx])
+  if (ind !== -1) {
+    res.json(book[ind]);
   } else {
-    res.status(404)
-    res.json('404 | страница не найдена')
+    res.status(404).json('404 | страница не найдена');
   }
-})
+});
 
 app.post('/api/books', (req, res) => {
   const {book} = stor
@@ -78,39 +77,36 @@ app.post('/api/books', (req, res) => {
 })
 
 app.put('/api/books/:id', (req, res) => {
-  const {book} = stor
-  const {title, desc} = req.body
-  const {id} = req.params
-  const ind = book.findIndex(el => el.id === id)
+  const { book } = stor;
+  const { title, desc } = req.body;
+  const { id } = req.params;
+  const ind = book.findIndex(el => el.id === id);
 
-  if(ind !== -1) {
-    book[idx] = {
-      ...book[idx],
+  if (ind !== -1) {
+    book[ind] = {
+      ...book[ind],
       title,
       desc,
-    }
+    };
 
-    res.json(book[idx])
+    res.json(book[ind]);
   } else {
-    res.status(404)
-    res.json('404 | страница не найдена')
+    res.status(404).json('404 | страница не найдена');
   }
-
-})
+});
 
 app.delete('/api/books/:id', (req, res) => {
-  const {book} = stor
-  const {id} = req.params
-  const ind = book.findIndex(el => el.id === id)
+  const { book } = stor;
+  const { id } = req.params;
+  const ind = book.findIndex(el => el.id === id);
 
-  if(ind !== -1) {
-    book.splice(idx, 1)
-    res.json('ok')
+  if (ind !== -1) {
+    book.splice(ind, 1);
+    res.json('ok');
   } else {
-    res.status(404)
-    res.json('404 | страница не найдена')
+    res.status(404).json('404 | страница не найдена');
   }
-})
+});
 
 app.use('/api/books/:id/download', (req, res) => {
   const { id } = req.params;
