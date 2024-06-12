@@ -1,10 +1,16 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const { stor } = require('./book');
 
 router.get('/api/books/:id/download', (req, res) => {
-  const {id, fileBook} = req
-  res.json({fileBook})
-})
+  const { id } = req.params;
+  const book = stor.book.find(book => book.id === id);
+  if (book) {
+    res.download(book.fileBook, book.fileName);
+  } else {
+    res.status(404).json('404 | страница не найдена');
+  }
+});
 
 router.post('/', (req, res) => {
   const { title, desc } = req.body;
@@ -33,4 +39,4 @@ router.put('/:id', (req, res) => {
   }
 });
 
-module.exports = router
+module.exports = router;
