@@ -1,14 +1,10 @@
-<%- include('../port/layout-start', {title: title}) %>
+<%- include('../port/layout-start') %>
 <%- include('../port/menu') %>
 
 <h1><%= title %></h1>
-
-<div class="row">
-    <div class="col-sm-6">
-        
-        <%- include('form', {book: book}) %>
-
-    </div>
-</div>
+<form action="/book/update/<%= book.id %>" method="POST" enctype="multipart/form-data">
+  <%- include('form', { book }) %>
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
 
 <%- include('../port/layout-end') %>

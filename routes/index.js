@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { stor } = require('./book');
+const { stor } = require('./api/book');
 
 router.get('/api/books/:id/download', (req, res) => {
   const { id } = req.params;
