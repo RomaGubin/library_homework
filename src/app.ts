@@ -1,34 +1,26 @@
-// interface Book {
-//   id: number, 
-//   title: "string", 
-//   description: "string", 
-//   authors: "string", 
-//   favorite: false, 
-//   fileCover: "string", 
-//   fileName: "string",
-//   fileBook: "string"
-// }
+import "reflect-metadata";
+import { injectable } from "inversify";
 
-abstract class BooksRepository {
-  createBook(/*book*/){
-    console.log('Not Implement')
-  }
-  getBook(/*id*/){
-    console.log('Not Implement')
-  }
-  getBooks(){
-    console.log('Not Implement')
-  }
-  updateBook(/*id*/){
-    console.log('Not Implement')
-  }
-  deleteBook(/*id*/){
-    console.log('Not Implement')
-  }
+export abstract class BooksRepository {
+  abstract createBook(book: any): Promise<any>;
+  abstract getBook(id: string): Promise<any>;
+  abstract getBooks(): Promise<any>;
+  abstract updateBook(id: string, book: any): Promise<any>;
+  abstract deleteBook(id: string): Promise<any>;
 }
 
+@injectable()
+export class BooksRepositoryImpl extends BooksRepository {
+  async createBook(book: any): Promise<any> {}
+  async getBook(id: string): Promise<any> {}
+  async getBooks(): Promise<any> {}
+  async updateBook(id: string, book: any): Promise<any> {}
+  async deleteBook(id: string): Promise<any> {}
+}
+
+/*
 class Book extends BooksRepository {
-  id: number; 
+  id: string; 
   title: "string"; 
   description: "string"; 
   authors: "string"; 
@@ -37,7 +29,7 @@ class Book extends BooksRepository {
   fileName: "string";
   fileBook: "string"
   constructor(
-    id: number, 
+    id: string, 
     title: "string", 
     description: "string", 
     authors: "string", 
@@ -56,5 +48,5 @@ class Book extends BooksRepository {
       this.fileBook = fileBook;
     }
 }
-
+*/
 //const book = new Book(id: 1221431,);
