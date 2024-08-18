@@ -1,51 +1,83 @@
-const express = require('express');
+import express, { Request, Response } from "express";
+import { v4 as uuid } from "uuid";
+
 const router = express.Router();
-const { v4: uuid } = require('uuid');
+
+interface BookProps {
+  id?: string;
+  title?: string;
+  description?: string;
+  authors?: string;
+  favorite?: boolean;
+  fileCover?: string;
+  fileName?: string;
+  fileBook?: string;
+}
 
 class Book {
-  constructor({ 
-    id = uuid(), 
-    title = "string", 
-    description = "string", 
-    authors = "string", 
-    favorite = false, 
-    fileCover = "string", 
-    fileName = "string", 
-    fileBook = "string" 
-  } = {}) {
-    Object.assign(this, { id, title, description, authors, favorite, fileCover, fileName, fileBook });
+  id: string;
+  title: string;
+  description: string;
+  authors: string;
+  favorite: boolean;
+  fileCover: string;
+  fileName: string;
+  fileBook: string;
+
+  constructor({
+    id = uuid(),
+    title = "string",
+    description = "string",
+    authors = "string",
+    favorite = false,
+    fileCover = "string",
+    fileName = "string",
+    fileBook = "string"
+  }: BookProps = {}) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.authors = authors;
+    this.favorite = favorite;
+    this.fileCover = fileCover;
+    this.fileName = fileName;
+    this.fileBook = fileBook;
   }
 }
 
 const stor = {
-  books: [],
+  books: [] as Book[],
 };
 
 // Пример данных для демонстрации
 [1, 2, 3].map(el => {
-    const newBook = new Book({ title: `book ${el}`, description: `description ${el}`, authors: `author ${el}` });
-    stor.books.push(newBook);
+  const newBook = new Book({
+    title: `book ${el}`,
+    description: `description ${el}`,
+    authors: `author ${el}`
+  });
+  stor.books.push(newBook);
 });
 
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   res.render('books/index', {
     title: 'Books',
     books: stor.books
   });
 });
 
-router.get('/create', (req, res) => {
+router.get('/create', (req: Request, res: Response) => {
   res.render('books/create', { title: 'Create Book' });
 });
 
-router.post('/create', (req, res) => {
+router.post('/create', (req: Request, res: Response) => {
   const { title, description, authors, favorite } = req.body;
   const newBook = new Book({ title, description, authors, favorite: !!favorite });
   stor.books.push(newBook);
   res.redirect('/book');
 });
 
-router.get('/update/:id', (req, res) => {
+router.get('/update/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const book = stor.books.find(book => book.id === id);
   if (book) {
@@ -55,7 +87,7 @@ router.get('/update/:id', (req, res) => {
   }
 });
 
-router.post('/update/:id', (req, res) => {
+router.post('/update/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description, authors, favorite } = req.body;
   const book = stor.books.find(book => book.id === id);
@@ -70,7 +102,7 @@ router.post('/update/:id', (req, res) => {
   }
 });
 
-router.post('/delete/:id', (req, res) => {
+router.post('/delete/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const index = stor.books.findIndex(book => book.id === id);
   if (index !== -1) {
@@ -81,4 +113,4 @@ router.post('/delete/:id', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
